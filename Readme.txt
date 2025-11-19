@@ -24,12 +24,53 @@ ansible-docker-flask/
 ├── portainer-server-stack.yml  (For Master Node)
 └── portainer-agent-stack.yml   (For Worker Nodes)
 
-Execution Steps
-================
+Brief Execution Steps
+======================
 
 1. Run Ansible: ansible-playbook -i ansible/inventory.ini ansible/playbook.yml
 2. Access Portainer: Open https://<MASTER_IP>:9443 
 3. Connect Workers: Inside Portainer, add Worker 1 using IP <WORKER_1_IP>:9001
 4. Configure Access (RBAC): Create Users in Portainer (e.g., UserA, UserB) , Go to Environments -> Worker 1 , Assign UserA access to specific containers. Now UserA can only see and manage their assigned containers. And similarly for Worker 2/UserB.
+
+Ports Used 
+===========
+
+Custom TCP | Port 9443 | Source: X.X.X.X/X (For HTTPS UI)
+
+Custom TCP | Port 8000 | Source: X.X.X.X/X (For Agent Tunnel)
+
+Custom TCP | Port 9000 | Source: X.X.X.X/X (For Legacy HTTP UI)
+
+Custom TCP | Port 5000 | Source: X.X.X.X/X (For your Flask App)
+
+Custom TCP | Port 9001 | Source: X.X.X.X/X (For Worker Node to Master Communication)
+
+Configuring Portainer - Role-Based Access Control (RBAC)
+=========================================================
+
+1. Go to Environments Section--> Select Add Environment--> Select Docker Standalone--> Select Agent.
+2. Enter Name [Ex: worker1] and Env Address [Ex: WorkerIP:9001]. Click Connect and close.
+3. For User Creation, Go to Users Section--> Enter Username [Ex: Developer, Password--> Click Create User.
+4. For Assiging Access, Go to Environments--> Select Worker1->Manage Access->Select Users from User dropdown list--> Click Create Access.
+5. Repeat the Process from Step 1 for Other Worker Nodes and Users.
+
+Check-List:
+===========
+
+Portainer Management UI: https://MasterIP:9443 --> Login_Page
+ContainerHello: http:WorkerIP:5000
+
+
+OUTPUT
+======
+
+<img width="1918" height="913" alt="Image" src="https://github.com/user-attachments/assets/1199a4dd-a346-428b-a336-e10fe6871c9c" />
+
+<img width="1917" height="922" alt="Image" src="https://github.com/user-attachments/assets/b2e89d34-6263-4069-85d3-4095597af47f" />
+
+<img width="1916" height="814" alt="Image" src="https://github.com/user-attachments/assets/dea9c075-d221-4be6-9e27-7c0468da842a" />
+
+<img width="1918" height="212" alt="Image" src="https://github.com/user-attachments/assets/69e4b251-cffb-446e-92b1-85ef7b11ff0b" />
+
 
 
