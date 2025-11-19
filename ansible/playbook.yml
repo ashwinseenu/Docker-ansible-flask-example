@@ -11,12 +11,10 @@
           - 'curl'
           - 'software-properties-common'
           - 'python3-pip'
-          - 'python3-docker'  # <--- FIXED: Installed via APT instead of PIP
+          - 'python3-docker'  # <--- Installed via APT instead of PIP
         state: present
         update_cache: yes
 
-    # PIP TASK REMOVED - It causes the 'externally-managed-environment' error
-    
     - name: Install Docker Engine
       shell: |
         curl -fsSL https://get.docker.com -o get-docker.sh

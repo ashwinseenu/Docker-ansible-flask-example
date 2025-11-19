@@ -64,13 +64,11 @@ ContainerHello: http:WorkerIP:5000
 OUTPUT
 ======
 
-<img width="1918" height="913" alt="Image" src="https://github.com/user-attachments/assets/1199a4dd-a346-428b-a336-e10fe6871c9c" />
+![PortainerLoginPage](./assets/PortainerLoginPage.png)
+![AdminDashboard](./assets/AdminDashboard.png)
+![UserDashbord](./assets/UserDashbord.png)
+![ContainerHello](./assets/ContainerHello.png)
 
-<img width="1917" height="922" alt="Image" src="https://github.com/user-attachments/assets/b2e89d34-6263-4069-85d3-4095597af47f" />
-
-<img width="1916" height="814" alt="Image" src="https://github.com/user-attachments/assets/dea9c075-d221-4be6-9e27-7c0468da842a" />
-
-<img width="1918" height="212" alt="Image" src="https://github.com/user-attachments/assets/69e4b251-cffb-446e-92b1-85ef7b11ff0b" />
 
 
 
