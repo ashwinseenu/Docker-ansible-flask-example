@@ -1,0 +1,81 @@
+---
+- name: 1. Setup Docker Base on All Nodes
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install system dependencies
+      apt:
+        name: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip']
+        state: present
+        update_cache: yes
+
+    - name: Install Docker SDK for Python
+      pip:
+        name: docker
+
+    - name: Install Docker Engine
+      shell: |
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        sh get-docker.sh
+      args:
+        creates: /usr/bin/docker
+
+- name: 2. Deploy Portainer Server on Master
+  hosts: master
+  become: yes
+  tasks:
+    - name: Create server directory
+      file:
+        path: /opt/portainer_server
+        state: directory
+
+    - name: Copy Server Stack
+      copy:
+        src: ../portainer-server-stack.yml
+        dest: /opt/portainer_server/docker-compose.yml
+
+    - name: Launch Portainer Server
+      community.docker.docker_compose:
+        project_src: /opt/portainer_server
+        state: present
+
+- name: 3. Deploy Portainer Agent on Workers
+  hosts: workers
+  become: yes
+  tasks:
+    - name: Create agent directory
+      file:
+        path: /opt/portainer_agent
+        state: directory
+
+    - name: Copy Agent Stack
+      copy:
+        src: ../portainer-agent-stack.yml
+        dest: /opt/portainer_agent/docker-compose.yml
+
+    - name: Launch Portainer Agent
+      community.docker.docker_compose:
+        project_src: /opt/portainer_agent
+        state: present
+
+- name: 4. Deploy User App on Workers
+  hosts: workers
+  become: yes
+  tasks:
+    - name: Create app directory
+      file:
+        path: /opt/my_app
+        state: directory
+
+    - name: Copy App Files
+      copy:
+        src: ../app/
+        dest: /opt/my_app/
+
+    # Force rebuild in case of code changes
+    - name: Launch User App
+      community.docker.docker_compose:
+        project_src: /opt/my_app
+        build: yes
+        state: present
+        recreate: always
