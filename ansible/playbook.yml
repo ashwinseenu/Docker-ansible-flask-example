@@ -5,15 +5,18 @@
   tasks:
     - name: Install system dependencies
       apt:
-        name: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip']
+        name: 
+          - 'apt-transport-https'
+          - 'ca-certificates'
+          - 'curl'
+          - 'software-properties-common'
+          - 'python3-pip'
+          - 'python3-docker'  # <--- FIXED: Installed via APT instead of PIP
         state: present
         update_cache: yes
 
-    - name: Install Docker SDK for Python
-      pip:
-        name: docker
-
-    # This script automatically installs the Docker Compose V2 plugin required for the new module
+    # PIP TASK REMOVED - It causes the 'externally-managed-environment' error
+    
     - name: Install Docker Engine
       shell: |
         curl -fsSL https://get.docker.com -o get-docker.sh
@@ -76,6 +79,6 @@
     - name: Launch User App
       community.docker.docker_compose_v2:
         project_src: /opt/my_app
-        build: always    # _v2 uses 'always', 'never', or 'missing' for build
+        build: always
         state: present
         recreate: always
