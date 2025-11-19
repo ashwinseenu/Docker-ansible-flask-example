@@ -13,6 +13,7 @@
       pip:
         name: docker
 
+    # This script automatically installs the Docker Compose V2 plugin required for the new module
     - name: Install Docker Engine
       shell: |
         curl -fsSL https://get.docker.com -o get-docker.sh
@@ -35,7 +36,7 @@
         dest: /opt/portainer_server/docker-compose.yml
 
     - name: Launch Portainer Server
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         project_src: /opt/portainer_server
         state: present
 
@@ -54,7 +55,7 @@
         dest: /opt/portainer_agent/docker-compose.yml
 
     - name: Launch Portainer Agent
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         project_src: /opt/portainer_agent
         state: present
 
@@ -72,10 +73,9 @@
         src: ../app/
         dest: /opt/my_app/
 
-    # Force rebuild in case of code changes
     - name: Launch User App
-      community.docker.docker_compose:
+      community.docker.docker_compose_v2:
         project_src: /opt/my_app
-        build: yes
+        build: always    # _v2 uses 'always', 'never', or 'missing' for build
         state: present
         recreate: always
